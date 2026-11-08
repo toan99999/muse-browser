@@ -73,18 +73,6 @@ final class AddonCoordinator: NSObject, AddonEmbedderDelegate {
     
     func start() async {
         AddonRuntime.shared.delegate = self
-        // Muse: install the built-in extension that hides the muse.ai web
-        // app's own back button (the arrow in the chat header). The browser's
-        // own back/swipe is already disabled; this hides the button the
-        // website itself draws.
-        do {
-            _ = try await AddonRuntime.shared.ensureBuiltIn(
-                location: "resource://app/extensions/musehideback/",
-                id: "musehideback@muse.browser"
-            )
-        } catch {
-            NSLog("Failed to install Muse hide-back-button extension: %@", "\(error)")
-        }
         _ = try? await AddonRuntime.shared.list()
         updateCoordinator.start()
         delegate?.refreshAddonChrome(self)
