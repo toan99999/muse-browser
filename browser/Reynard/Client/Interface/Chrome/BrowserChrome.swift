@@ -57,6 +57,11 @@ final class BrowserChrome: UIView, UIGestureRecognizerDelegate {
         let animatesChromeStateChanges: Bool
     }
     
+    // Muse: 3-finger tap toggles the address bar. Off by default (the
+    // toolbar stays hidden, as before); when on, the toolbar is shown
+    // using the normal resolved states. Toggled from BrowserViewController.
+    var isAddressBarVisible = false
+
     var onSidebar: (() -> Void)?
     var onBack: (() -> Void)?
     var onForward: (() -> Void)?
@@ -226,9 +231,21 @@ final class BrowserChrome: UIView, UIGestureRecognizerDelegate {
             dismissActionBar(animated: false)
         }
         
-        // Muse: toolbar is always hidden, regardless of presentation/mode
-        let topState: TopToolbar.LayoutState = .hidden
-        let bottomState: BottomToolbar.LayoutState = .hidden
+        // Muse: toolbar is hidden by default; a 3-finger tap toggles
+        // isAddressBarVisible, and when it is on the toolbar is shown
+        // using the normal resolved states (as in upstream Reynard).
+        let topState: TopToolbar.LayoutState
+        let bottomState: BottomToolbar.LayoutState
+        if !isAddressBarVisible {
+            topState = .hidden
+            bottomState = .hidden
+        } else if state.presentation != .browsing {
+            topState = .hidden
+            bottomState = state.mode == .compact ? .collapsed : .hidden
+        } else {
+            topState = resolvedTopState(for: state)
+            bottomState = resolvedBottomState(for: state)
+        }
         
         topToolbar.apply(
             state: topState,
