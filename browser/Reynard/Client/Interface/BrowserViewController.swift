@@ -1143,20 +1143,22 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
             return
         }
         
-        // Muse: no back navigation — the app always opens to muse.ai, so the
-        // back button is disabled and the swipe-back gesture (which slides the
-        // previous page in with its own header) is turned off entirely.
+        // Muse: back/forward buttons only work when the address bar is
+        // shown (3-finger tap). When the toolbar is hidden the buttons are
+        // disabled; when it is shown they follow the tab's real history.
+        // The swipe-back gesture stays off entirely.
+        let isAddressBarVisible = browserChrome.isAddressBarVisible
         browserChrome.updateNavigation(
-            canGoBack: false,
-            canGoForward: tab.state.navigationState.canGoForward,
+            canGoBack: isAddressBarVisible ? tab.state.navigationState.canGoBack : false,
+            canGoForward: isAddressBarVisible ? tab.state.navigationState.canGoForward : false,
             canShare: tabManager.shareableURL(for: tab) != nil
         )
-        
+
         let previewImages = tabManager.navigationPreviewImages(for: tab)
         contentView.setHistoryNavigation(
-            canGoBack: false,
-            canGoForward: tab.state.navigationState.canGoForward,
-            backPreviewImage: nil,
+            canGoBack: isAddressBarVisible ? tab.state.navigationState.canGoBack : false,
+            canGoForward: isAddressBarVisible ? tab.state.navigationState.canGoForward : false,
+            backPreviewImage: isAddressBarVisible ? previewImages.backImage : nil,
             forwardPreviewImage: previewImages.forwardImage,
             isSwipeEnabled: false
         )
