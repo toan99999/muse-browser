@@ -47,7 +47,7 @@ final class OpenInViewController: UIViewController {
             }
             
             guard let browserURL = self.browserOpenURL(for: sharedURL) else {
-                self.finishWithError(message: "Unable to open Reynard.")
+                self.finishWithError(message: "Unable to open Muse.")
                 return
             }
             
@@ -74,7 +74,7 @@ final class OpenInViewController: UIViewController {
     }
     
     private func browserOpenURL(for sharedURL: URL) -> URL? {
-        guard var components = URLComponents(string: "reynard://open") else {
+        guard var components = URLComponents(string: "muse://open") else {
             return nil
         }
         
@@ -106,7 +106,7 @@ final class OpenInViewController: UIViewController {
             responder = r.next
         }
 
-        finishWithError(message: "Unable to open Reynard.")
+        finishWithError(message: "Unable to open Muse.")
     }
     
     private func clearBackgrounds(startingAt view: UIView?) {
