@@ -79,4 +79,4 @@ if [ "$BUILD_TYPE" = "--jailbroken" ]; then
 	unzip -p "Reynard-0.10.0.ipa" "Payload/Reynard.app/Frameworks/libswift_Concurrency.dylib" > "Payload/Reynard.app/Frameworks/libswift_Concurrency.dylib"
 fi
 
-zip -r "../$OUTPUT_NAME" Payload -x "._*" -x ".DS_Store" -x "__MACOSX"
+zip -r -9 -D "../$OUTPUT_NAME" Payload -x "._*" -x ".DS_Store" -x "__MACOSX"
