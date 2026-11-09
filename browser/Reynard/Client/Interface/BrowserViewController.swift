@@ -169,8 +169,11 @@ final class BrowserViewController: UIViewController, GeckoScreenOrientationDeleg
         applyUpdateMenuButtonBadge()
         
         tabManager.createInitialTab()
-        // Muse: always open straight to Muse on launch
-        if let tab = tabManager.selectedTab, tab.url != "https://muse.ai" {
+        // Muse: only open the home page when the tab is completely empty.
+        // A tab restored from the previous session already has its chat URL
+        // (or https://muse.ai/), so forcing it back to the home page would
+        // discard the chat the user had open.
+        if let tab = tabManager.selectedTab, (tab.url ?? "").isEmpty {
             tabManager.browse(to: "https://muse.ai", in: tab)
         }
         refreshAddressBar()
