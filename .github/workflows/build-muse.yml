@@ -5,6 +5,9 @@ name: Build Muse (TrollStore)
 
 on:
   workflow_dispatch:
+  # keep-warm — scheduled cache-hit build twice a week (Sun & Wed 03:00 UTC) so the Gecko objdir/sccache caches stay warm; free on public repos.
+  schedule:
+    - cron: '0 3 * * 0,3'
   push:
     branches: [main]
     paths:
