@@ -224,6 +224,7 @@ final class BrowserViewController: UIViewController {
             tabManager.createInitialTab(startup)
             self.startup = nil
         }
+        tabOverview.restoreMode(TabOverview.Mode(tabMode: tabManager.selectedTabMode))
         // Muse: only open the home page when the tab is completely empty.
         // A tab restored from the previous session already has its chat URL
         // (or https://muse.ai/), so forcing it back to the home page would
@@ -231,7 +232,6 @@ final class BrowserViewController: UIViewController {
         if let tab = tabManager.selectedTab, (tab.url ?? "").isEmpty {
             tabManager.browse(to: "https://muse.ai", in: tab)
         }
-        tabOverview.restoreMode(TabOverview.Mode(tabMode: tabManager.selectedTabMode))
         refreshAddressBar()
         homepageOverlayCoordinator.updatePresentation(animated: false)
         
