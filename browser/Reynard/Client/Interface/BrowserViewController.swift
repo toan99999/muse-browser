@@ -1196,7 +1196,6 @@ final class BrowserViewController: UIViewController {
         // The swipe-back gesture stays off entirely.
         let isAddressBarVisible = browserChrome.isAddressBarVisible
         browserChrome.updateNavigation(
-        browserChrome.updateNavigation(
             canGoBack: isAddressBarVisible ? tabManager.canGoBack : false,
             canGoForward: isAddressBarVisible ? tab.state.navigationState.canGoForward : false,
             canShare: tab.shareableURL != nil
